@@ -113,10 +113,22 @@ b)
 
 <img width="1442" height="292" alt="image" src="https://github.com/user-attachments/assets/5ea8180c-6db6-430a-9222-4380253e7c84" />
 
+Dans psql, la commande SELECT version(); affiche la version du serveur PostgreSQL (par exemple PostgreSQL 16.x).
+La commande SELECT current_database(); renvoie demo, ce qui confirme que je suis bien connecté à la base configurée dans Docker Compose.
 
-c)
+c) Dans le réseau Docker Compose, les services peuvent se joindre en utilisant le nom du service comme hostname.
+Pour que l’API se connecte à PostgreSQL, elle utiliserait :
+hostname : db (nom du service dans docker-compose.yml)
+port : 5432
+utilisateur : demo
+mot de passe : demo
+base : demo
+Par exemple, une URL de connexion serait :
+postgresql://demo:demo@db:5432/demo.
 
-d)
+
+d)  docker compose down arrête les conteneurs et supprime les ressources du projet (conteneurs, réseau), mais conserve les volumes : les données restent sur le disque.
+docker compose down -v fait la même chose, mais supprime aussi les volumes associés, donc les données stockées dans PostgreSQL sont définitivement effacées.
 
 ## Exercice 7: Déboguer des conteneurs Docker : commandes essentielles et bonnes pratiques
 a)
