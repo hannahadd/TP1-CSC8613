@@ -52,12 +52,14 @@ c) <img width="1498" height="898" alt="image" src="https://github.com/user-attac
 
 Étape 1 — Lancer le conteneur
 a) 
+
 <img width="572" height="102" alt="Capture d’écran 2025-12-05 à 18 15 23" src="https://github.com/user-attachments/assets/d60a8b64-b239-4dbd-b6d7-439abff773f7" />
 
 L’option -p 8000:8000 demande à Docker de faire un mapping de port entre le port 8000 du conteneur et le port 8000 de la machine hôte. C'est grâce à ça qu'on peut accéder à l’API qui tourne dans le conteneur via http://localhost:8000 sur ma machine.
 
 Étape 2 — Tester l’endpoint /health
 b) 
+
 <img width="449" height="72" alt="image" src="https://github.com/user-attachments/assets/7b618d0a-ad67-40a4-8e60-2de9451123cc" />
 
 <img width="534" height="92" alt="image" src="https://github.com/user-attachments/assets/8c8bd2c0-cde1-4a9a-9a13-18b11d6003b7" />
@@ -105,9 +107,12 @@ La commande docker compose down arrête et supprime tous les conteneurs, le rés
 
 ## Exercice 6:Interagir avec la base de données PostgreSQL dans un conteneur
 
-a)
+a) La commande docker compose exec db psql -U demo -d demo permet d’ouvrir le client PostgreSQL psql à l’intérieur du conteneur associé au service db défini dans docker-compose.yml, sans redémarrer le conteneur. On se connecte ainsi à la base de données demo en utilisant l’utilisateur PostgreSQL demo.
 
 b)
+
+<img width="1442" height="292" alt="image" src="https://github.com/user-attachments/assets/5ea8180c-6db6-430a-9222-4380253e7c84" />
+
 
 c)
 
