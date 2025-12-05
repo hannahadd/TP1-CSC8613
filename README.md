@@ -51,18 +51,23 @@ c) <img width="1498" height="898" alt="image" src="https://github.com/user-attac
 ## Exercice 4: Exécuter l’API FastAPI dans un conteneur Docker
 
 Étape 1 — Lancer le conteneur
-a) <img width="572" height="102" alt="Capture d’écran 2025-12-05 à 18 15 23" src="https://github.com/user-attachments/assets/d60a8b64-b239-4dbd-b6d7-439abff773f7" />
+a) 
+<img width="572" height="102" alt="Capture d’écran 2025-12-05 à 18 15 23" src="https://github.com/user-attachments/assets/d60a8b64-b239-4dbd-b6d7-439abff773f7" />
 
 L’option -p 8000:8000 demande à Docker de faire un mapping de port entre le port 8000 du conteneur et le port 8000 de la machine hôte. C'est grâce à ça qu'on peut accéder à l’API qui tourne dans le conteneur via http://localhost:8000 sur ma machine.
 
 Étape 2 — Tester l’endpoint /health
-b) <img width="449" height="72" alt="image" src="https://github.com/user-attachments/assets/7b618d0a-ad67-40a4-8e60-2de9451123cc" />
+b) 
+<img width="449" height="72" alt="image" src="https://github.com/user-attachments/assets/7b618d0a-ad67-40a4-8e60-2de9451123cc" />
+
 <img width="534" height="92" alt="image" src="https://github.com/user-attachments/assets/8c8bd2c0-cde1-4a9a-9a13-18b11d6003b7" />
 
 
 
 Étape 3 — Observer les conteneurs en cours d’exécution
-c) <img width="1854" height="246" alt="image" src="https://github.com/user-attachments/assets/9f5c0b0c-ac24-4476-b552-d124a082a8dc" />
+
+c) 
+<img width="1854" height="246" alt="image" src="https://github.com/user-attachments/assets/9f5c0b0c-ac24-4476-b552-d124a082a8dc" />
 
 Le conteneur simple-api apparaît dans docker ps avec :
 Image : simple-api
@@ -71,35 +76,60 @@ Ports : 0.0.0.0:8000->8000/tcp, ce qui indique que le port 8000 du conteneur est
 
 
 Étape 4 — Arrêter le conteneur
-d)<img width="572" height="254" alt="Capture d’écran 2025-12-05 à 18 48 26" src="https://github.com/user-attachments/assets/fa4d5d2f-c229-4033-83f3-43d6683f3f23" />
+d)
+<img width="572" height="254" alt="Capture d’écran 2025-12-05 à 18 48 26" src="https://github.com/user-attachments/assets/fa4d5d2f-c229-4033-83f3-43d6683f3f23" />
 
 La commande docker stop <id> arrête le conteneur en cours d’exécution.
 docker ps n’affiche que les conteneurs actuellement en cours d’exécution, tandis que docker ps -a liste tous les conteneurs, y compris ceux qui sont arrêtés (Exited).
 
 
 ## Exercice 5: Démarrer un mini-système multi-conteneurs avec Docker Compose
+
 a) ☑
-b)
+
+b) ☑
+
 c)
+<img width="1420" height="680" alt="image" src="https://github.com/user-attachments/assets/e908affe-900a-44ef-ae72-e46e895e6440" />
+
+<img width="1438" height="424" alt="image" src="https://github.com/user-attachments/assets/b7b929dd-ef2f-4b71-9406-ce9bfbdaa76b" />
+
 d)
-e)
+<img width="1436" height="498" alt="image" src="https://github.com/user-attachments/assets/81ca17f8-9e2e-4173-98f1-0ed0ed62db69" />
+
+
+e)☑
+<img width="731" height="64" alt="image" src="https://github.com/user-attachments/assets/0976a4f0-5d78-4997-9c40-77ad76457421" />
+
+La commande docker compose down arrête et supprime tous les conteneurs, le réseau et les ressources associées au fichier docker-compose.yml. À l’inverse, docker stop <id> ne concerne qu’un seul conteneur : il l’arrête, mais ne supprime pas sa définition et n’agit pas sur les autres services du projet.
 
 ## Exercice 6:Interagir avec la base de données PostgreSQL dans un conteneur
+
 a)
+
 b)
+
 c)
+
 d)
 
 ## Exercice 7: Déboguer des conteneurs Docker : commandes essentielles et bonnes pratiques
 a)
+
 b)
+
 c)
+
 d)
+
 e)
 
 ## Exercice 8: 
 
 a)
+
 b)
+
 c)
+
 d)
