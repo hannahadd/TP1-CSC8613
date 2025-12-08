@@ -1,9 +1,7 @@
 # TP1-CSC8613
 
 ## Exercice 1: Installation de Docker et vérification de l’environnement 
-a) Capture du hello world
-
-<img width="1114" height="582" alt="image" src="https://github.com/user-attachments/assets/36b4aa75-5c8d-4724-91c8-3e3bdf7f64c7" />
+a) ☑
 
 b) Capture de la commande ps -a
 
