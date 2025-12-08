@@ -133,20 +133,30 @@ docker compose down -v fait la même chose, mais supprime aussi les volumes asso
 ## Exercice 7: Déboguer des conteneurs Docker : commandes essentielles et bonnes pratiques
 a)
 
-b)
+<img width="721" height="132" alt="Capture d’écran 2025-12-08 à 15 09 37" src="https://github.com/user-attachments/assets/1a3bff28-a3c8-44bc-b754-be0ab54e7573" />
+<img width="1438" height="360" alt="image" src="https://github.com/user-attachments/assets/d49b5242-8949-4138-b81b-281618c6229a" />
 
-c)
 
-d)
+docker compose logs -f api permet de suivre en direct les logs du service api.
+Au démarrage, on voit Uvicorn initialiser le serveur FastAPI (messages “Started server process”, “Uvicorn running on …”). Lorsqu’une requête est faite sur /health, une ligne de log supplémentaire apparaît avec la méthode GET /health et le code de réponse HTTP 200.
 
-e)
+b)docker compose exec api sh ouvre un shell dans le conteneur du service api.
+La commande ls montre le contenu du répertoire de travail /app (par exemple app.py).
+python --version affiche la version de Python installée dans le conteneur (ici Python 3.11).
+En tapant exit, on ferme le shell et on revient au terminal de la machine hôte.
+
+c) docker compose restart api arrête puis relance uniquement le conteneur du service api, sans toucher à la base de données. C’est utile lorsqu’un seul service est bloqué (API qui plante, mise à jour de configuration…) mais que l’on souhaite garder les autres services (par exemple la base de données) en fonctionnement.
+
+d) Après avoir volontairement renommé la variable app en appi dans app.py, le service api ne démarre plus. Avec docker compose logs -f api, on observe une trace d’erreur indiquant qu’Uvicorn ne trouve pas l’application app (app:app). En lisant le message d’erreur et en le reliant à la configuration de lancement (CMD ["uvicorn", "app:app", ...]), on identifie rapidement la cause : la variable FastAPI doit s’appeler app.
+
+e) docker container prune supprime tous les conteneurs arrêtés, ce qui évite d’accumuler des ressources inutiles.
+docker image prune supprime les images Docker non utilisées (dangling / non référencées par des conteneurs), ce qui libère de l’espace disque. Nettoyer régulièrement son environnement Docker permet d’éviter que la machine ne soit saturée par des conteneurs et images obsolètes créés lors des nombreux tests et rebuilds.
 
 ## Exercice 8: 
 
-a)
+a) Un notebook Jupyter est très pratique pour l’exploration et les prototypes, mais il n’est pas adapté à un déploiement en production.
+D’abord, l’exécution n’est pas reproductible : on peut lancer les cellules dans n’importe quel ordre, garder de l’état caché en mémoire, et on ne sait pas exactement dans quelles conditions le modèle a été entraîné ou exécuté. À l’inverse, avec Docker on fige un environnement précis (version de Python, bibliothèques, configuration) dans une image, ce qui garantit que le même code se comporte de la même façon sur n’importe quelle machine.
+Ensuite, un notebook n’est pas fait pour être un service automatisé : il faut l’ouvrir à la main, lancer les cellules, et il n’expose pas naturellement une API stable. Dans le TP, on a au contraire emballé le modèle (ici une mini-API FastAPI) dans un conteneur qui démarre automatiquement avec docker run ou docker compose up et qui expose une route /health. C’est ce type d’architecture qui est attendu en production pour intégrer un modèle dans un système plus large.
 
-b)
-
-c)
-
-d)
+b) Docker Compose devient essentiel dès qu’on manipule plusieurs services (API, base de données, etc.). Il permet de décrire toute l’architecture applicative dans un seul fichier YAML (docker-compose.yml) : services, images, ports, variables d’environnement, dépendances…
+Dans le TP, grâce à Docker Compose, on a pu lancer l’API FastAPI et la base PostgreSQL ensemble avec une seule commande docker compose up -d, au lieu de devoir écrire à la main plusieurs commandes docker run compliquées. Compose crée aussi automatiquement un réseau entre les services : l’API peut joindre la base via le hostname db, sans se soucier des adresses IP. Enfin, il simplifie la gestion et le débogage : docker compose logs, docker compose exec, docker compose restart api… tout est centralisé pour l’ensemble de la stack.
