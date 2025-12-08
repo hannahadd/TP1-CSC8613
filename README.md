@@ -19,7 +19,9 @@ b)  <img width="1122" height="322" alt="image" src="https://github.com/user-atta
 
 La commande docker run alpine echo "Bonjour depuis un conteneur Alpine" télécharge l’image alpine si elle n’est pas déjà présente, crée un conteneur à partir de cette image, exécute la commande echo à l’intérieur, affiche le message dans la console, puis arrête immédiatement le conteneur une fois la commande terminée.
 
-c) <img width="714" height="403" alt="image" src="https://github.com/user-attachments/assets/5ffe0c5f-cde1-4bb9-8be0-42331d9d4141" />
+c) 
+
+<img width="714" height="403" alt="image" src="https://github.com/user-attachments/assets/5ffe0c5f-cde1-4bb9-8be0-42331d9d4141" />
 
 Le conteneur basé sur l’image alpine apparaît avec l’état Exited car il a uniquement exécuté la commande echo puis s’est terminé. Dans Docker, un conteneur s’arrête dès que le processus principal associé (ici la commande echo) a fini de s’exécuter.
 
