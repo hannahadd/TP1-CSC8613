@@ -37,12 +37,11 @@ Avec docker run -it alpine sh, je lance un conteneur Alpine en mode interactif e
 
 Étape 1 — Compléter le fichier app.py
 
-a) <img width="1168" height="410" alt="image" src="https://github.com/user-attachments/assets/730aa584-510d-4b91-94ab-69feb6db9d9e" />
-
+a) ☑
 
 Étape 2 — Compléter le Dockerfile
 
-b) <img width="1342" height="588" alt="image" src="https://github.com/user-attachments/assets/367afb87-7de9-47af-ab46-6e7932af43bf" />
+b) ☑
 
 
 Étape 3 — Construire l'image Docker
