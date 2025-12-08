@@ -26,7 +26,9 @@ c)
 Le conteneur basé sur l’image alpine apparaît avec l’état Exited car il a uniquement exécuté la commande echo puis s’est terminé. Dans Docker, un conteneur s’arrête dès que le processus principal associé (ici la commande echo) a fini de s’exécuter.
 
 
-d) <img width="726" height="240" alt="image" src="https://github.com/user-attachments/assets/69fd2e37-86dd-44ca-985e-ab30906a99b6" />
+d) 
+
+<img width="726" height="240" alt="image" src="https://github.com/user-attachments/assets/69fd2e37-86dd-44ca-985e-ab30906a99b6" />
 
 Avec docker run -it alpine sh, je lance un conteneur Alpine en mode interactif et j’ouvre un shell sh à l’intérieur. La commande ls montre un système de fichiers minimal, propre à l’image Alpine. La commande uname -a confirme que le conteneur tourne sur un noyau Linux. Quand je tape exit, je sors du shell et le conteneur s’arrête : je reviens au terminal de ma machine hôte.
 
