@@ -1,5 +1,6 @@
 # TP1-CSC8613
-HADDAOUI HANNA MAIA 
+HADDAOUI HANNA 
+MAIA 
 
 ## Exercice 1: Installation de Docker et vérification de l’environnement 
 a) ☑
