@@ -156,6 +156,17 @@ d’une part, les données peuvent changer entre deux entraînements, ce qui ren
 Travailler sur des données figées à un instant donné permet de maîtriser précisément le contexte temporel de l’entraînement et de garantir la cohérence des résultats.
 
 
+*Pourquoi les snapshots sont essentiels (data leakage & reproductibilité) ?*
+Les snapshots permettent de figer l’état des données à une date donnée (as_of). Chaque snapshot représente une photographie fidèle du système à la fin d’un mois, indépendamment des évolutions ultérieures.
+Cela joue un rôle clé pour :
+éviter la data leakage, en s’assurant que seules les données disponibles à la date considérée sont utilisées ;
+garantir la reproductibilité temporelle, car un entraînement relancé plus tard sur le même snapshot produira les mêmes résultats ;
+comparer des modèles entraînés sur différentes périodes (analyse de dérive, évolution du comportement des utilisateurs).
+Les snapshots constituent donc une brique indispensable dans tout pipeline ML sérieux en production.
 
+Réflexion personnelle
+La partie la plus délicate de ce TP a été la mise en place correcte de l’ingestion avec upsert et snapshots, notamment la gestion des clés primaires composées (user_id, as_of) et la compréhension de l’impact temporel des données.
+J’ai également rencontré des difficultés liées à l’exécution du flow Prefect dans le conteneur (chemins des fichiers, variables d’environnement), que j’ai corrigées en vérifiant précisément les volumes montés et les commandes exécutées dans Docker Compose.
+Ce TP m’a permis de mieux comprendre les enjeux réels d’un pipeline de données en Machine Learning, au-delà du simple chargement de fichiers, en intégrant des notions fondamentales comme la validation des données, la traçabilité et la reproductibilité.
 
 d) fait 
