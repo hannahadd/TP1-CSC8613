@@ -1,6 +1,7 @@
 feast==0.56.0
 mlflow==2.16.0
 scikit-learn==1.7.2
+numpy
 pandas==2.3.3
 SQLAlchemy==2.0.36
 psycopg2-binary==2.9.11
