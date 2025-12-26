@@ -11,3 +11,11 @@ evidently==0.7.15
 great_expectations==0.17.21
 prefect==3.6.1
     
+
+feast==0.56.0
+pandas==2.3.3
+psycopg2-binary==2.9.11
+SQLAlchemy==2.0.36
+psycopg==3.2.12
+psycopg-pool==3.2.7
+
