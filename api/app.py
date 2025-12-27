@@ -3,12 +3,20 @@ from pydantic import BaseModel
 from feast import FeatureStore
 import mlflow.pyfunc
 import pandas as pd
+import os
+import time
+
+from prometheus_client import Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST
+from fastapi.responses import Response
 
 app = FastAPI(title="StreamFlow Churn Prediction API")
 
-# --- Config ---
 REPO_PATH = "/repo"
-MODEL_URI = "models:/streamflow_churn/Production"  # TODO 1
+MODEL_URI = "models:/streamflow_churn/Production"
+
+# Metrics Prometheus
+REQUEST_COUNT = Counter("api_requests_total", "Total number of API requests")
+REQUEST_LATENCY = Histogram("api_request_latency_seconds", "Latency of API requests in seconds")
 
 try:
     store = FeatureStore(repo_path=REPO_PATH)
@@ -28,8 +36,11 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/predict")  # TODO 2
+@app.post("/predict")
 def predict(payload: UserPayload):
+    start_time = time.time()
+    REQUEST_COUNT.inc()
+
     if store is None or model is None:
         return {"error": "Model or feature store not initialized"}
 
@@ -50,32 +61,33 @@ def predict(payload: UserPayload):
         "support_agg_90d_fv:ticket_avg_resolution_hrs_90d",
     ]
 
-    # TODO 3
     feature_dict = store.get_online_features(
         features=features_request,
         entity_rows=[{"user_id": payload.user_id}],
     ).to_dict()
 
-    # -> DataFrame 1 ligne
     X = pd.DataFrame({k: [v[0]] for k, v in feature_dict.items()})
 
-    # features manquantes = null
     if X.isnull().any().any():
         missing = X.columns[X.isnull().any()].tolist()
+        REQUEST_LATENCY.observe(time.time() - start_time)
         return {
             "error": f"Missing features for user_id={payload.user_id}",
             "missing_features": missing,
         }
 
-    # nettoyage
     X = X.drop(columns=["user_id"], errors="ignore")
 
-    # TODO 4
-    y_pred = model.predict(X)
+    y_pred = model.predict(X)  # pyfunc
+    REQUEST_LATENCY.observe(time.time() - start_time)
 
-    # TODO 5
     return {
         "user_id": payload.user_id,
         "prediction": int(y_pred[0]),
         "features_used": X.to_dict(orient="records")[0],
     }
+
+
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
