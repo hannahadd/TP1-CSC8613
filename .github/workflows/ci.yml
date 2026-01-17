@@ -34,6 +34,14 @@ jobs:
         run: |
           docker version
           docker compose version
+      - name: Create .env for CI
+        run: |
+          cat > .env <<'EOF'
+          POSTGRES_USER=streamflow
+          POSTGRES_PASSWORD=streamflow
+          POSTGRES_DB=streamflow
+          POSTGRES_HOST=postgres
+          EOF
 
       - name: Build and start core stack
         run: |
