@@ -73,7 +73,7 @@ curl -s -X POST "http://localhost:8000/predict" \
     "support_tickets_90d": 0
   }
 }
-...
+``` 
 
 Une phrase expliquant pourquoi l’API doit être redémarrée
 L’API charge le modèle MLflow au démarrage (models:/streamflow_churn/Production). Après une promotion dans le Model Registry, l’API ne recharge pas automatiquement le modèle déjà en mémoire : il faut donc redémarrer le service pour qu’il récupère la nouvelle version Production.
@@ -89,8 +89,22 @@ On démarre Docker Compose dans la CI pour lancer la stack complète et vérifie
 
 ## Exercice 7
 
-Q7.a
+### Q7.a 
 
-Q7.b
+Dans ce TP, on met en place une boucle complète : surveiller les données, déclencher un réentraînement si besoin, comparer au modèle en production et, éventuellement, promouvoir une nouvelle version, puis la servir via l’API. Le drift est mesuré avec Evidently en comparant month_000 (référence) à month_001 (courant). L’indicateur drift_share représente la proportion de variables dont la distribution a suffisamment changé entre les deux périodes. Si drift_share dépasse 0.02, on déclenche un réentraînement ; ce seuil est volontairement bas pour le TP, mais serait en général plus élevé en production.
+
+Quand le retrain est déclenché, train_and_compare_flow reconstruit le dataset du mois courant via Feast et les labels, entraîne un modèle candidat et logge ses métriques dans MLflow, notamment val_auc. Le flow évalue aussi le modèle déjà en Production sur le même split afin d’obtenir un prod_auc comparable. La promotion suit une règle simple : le candidat est promu seulement si son AUC dépasse celle de la Production d’au moins un delta (new_auc > prod_auc + delta). Sinon, la Production reste inchangée et la version candidate demeure au stage “None” dans le registry.
+
+Prefect orchestre toute la logique MLOps (monitoring, décision, réentraînement, comparaison et promotion dans MLflow). GitHub Actions assure la CI : exécution des tests unitaires et smoke test en lançant la stack via Docker Compose puis en vérifiant que l’API répond à /health.
+
+
+### Q7.b
+
+La CI ne doit pas lancer un entraînement complet car c’est coûteux, lent et souvent non déterministe, ce qui rend les runs instables et difficiles à reproduire. En CI, l’objectif est plutôt de valider rapidement que le code s’exécute, que les services démarrent et que les contrats d’API tiennent, pas d’optimiser un modèle.
+
+Il manque généralement des tests d’intégration plus fins, par exemple des tests d’API sur /predict avec des cas réels, des tests de schéma et de qualité de données, des tests de compatibilité Feast/MLflow, des tests de régression sur les métriques et des garde-fous sur le drift pour éviter les faux positifs.
+
+En conditions réelles, une approbation humaine reste souvent nécessaire car promouvoir un modèle a des impacts métier et réglementaires. On attend des validations sur la performance par segment, l’équité, la robustesse, la traçabilité, ainsi qu’une gouvernance claire sur qui peut promouvoir, quand, et avec quelles preuves, surtout si le modèle influence des décisions sensibles.
+
 
 Q7.c
